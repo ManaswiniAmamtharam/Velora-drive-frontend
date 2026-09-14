@@ -1,0 +1,78 @@
+.sell-page{
+margin:30px auto;
+}
+
+.sell-layout{
+display:grid;
+grid-template-columns:1fr 350px;
+gap:25px;
+}
+
+.form-card{
+background:white;
+padding:25px;
+border-radius:12px;
+display:flex;
+flex-direction:column;
+gap:14px;
+box-shadow:0 3px 10px rgba(0,0,0,.1);
+}
+
+.form-card input,
+.form-card select,
+.form-card textarea{
+padding:12px;
+border:1px solid #ccc;
+border-radius:8px;
+font-size:15px;
+}
+
+.upload{
+padding:12px;
+border:2px dashed #8B5CF6;
+border-radius:8px;
+text-align:center;
+cursor:pointer;
+}
+
+.upload input{
+display:none;
+}
+
+.btn-group{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.btn-group button{
+flex:1;
+padding:12px;
+border:none;
+border-radius:8px;
+background:#8B5CF6;
+color:white;
+font-weight:bold;
+}
+
+.preview-card{
+background:white;
+padding:18px;
+border-radius:12px;
+box-shadow:0 3px 10px rgba(0,0,0,.1);
+height:fit-content;
+}
+
+.preview-card img{
+width:100%;
+height:220px;
+object-fit:cover;
+border-radius:10px;
+margin-bottom:12px;
+}
+
+@media(max-width:768px){
+.sell-layout{
+grid-template-columns:1fr;
+}
+}
