@@ -1,78 +1,363 @@
-.sell-page{
-  margin:30px auto;
+
+/* ======================================
+   VELORA DRIVE - SELL VEHICLE PAGE
+   CLASSY LAVENDER THEME
+====================================== */
+
+:root {
+  --sell-lavender: #a895d5;
+  --sell-purple: #7863a8;
+  --sell-plum: #342844;
+  --sell-light: #eee8f8;
+  --sell-pale: #f8f5fc;
+  --sell-text: #302b38;
+  --sell-muted: #777180;
+  --sell-border: #e8e1f0;
+  --sell-white: #ffffff;
 }
 
-.sell-layout{
-  display:grid;
-  grid-template-columns:1fr 350px;
-  gap:25px;
+/* MAIN PAGE */
+
+.sell-page {
+  max-width: 1250px;
+  margin: 35px auto;
+  padding: 0 24px;
+  color: var(--sell-text);
 }
 
-.form-card{
-  background:white;
-  padding:25px;
-  border-radius:12px;
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-  box-shadow:0 3px 10px rgba(0,0,0,.1);
+/* PAGE LAYOUT */
+
+.sell-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 350px;
+  align-items: start;
+  gap: 28px;
 }
+
+/* VEHICLE FORM CARD */
+
+.form-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  min-width: 0;
+  padding: 30px;
+
+  background: var(--sell-white);
+  border: 1px solid var(--sell-border);
+  border-radius: 18px;
+
+  box-shadow: 0 8px 28px rgba(52, 40, 68, 0.06);
+
+  transition:
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.form-card:hover {
+  border-color: #d9ccef;
+  box-shadow: 0 12px 32px rgba(52, 40, 68, 0.09);
+}
+
+/* FORM INPUTS */
 
 .form-card input,
 .form-card select,
-.form-card textarea{
-  padding:12px;
-  border:1px solid #ccc;
-  border-radius:8px;
-  font-size:15px;
+.form-card textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 13px 14px;
+
+  background: #fdfcff;
+  color: var(--sell-text);
+
+  border: 1px solid #ded6e9;
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
-.upload{
-  padding:12px;
-  border:2px dashed #8B5CF6;
-  border-radius:8px;
-  text-align:center;
-  cursor:pointer;
+.form-card input::placeholder,
+.form-card textarea::placeholder {
+  color: #9a93a5;
 }
 
-.upload input{
-  display:none;
+.form-card input:hover,
+.form-card select:hover,
+.form-card textarea:hover {
+  border-color: #cfc2e5;
 }
 
-.btn-group{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
+.form-card input:focus,
+.form-card select:focus,
+.form-card textarea:focus {
+  outline: none;
+  background: var(--sell-white);
+  border-color: var(--sell-lavender);
+  box-shadow: 0 0 0 4px rgba(168, 149, 213, 0.13);
 }
 
-.btn-group button{
-  flex:1;
-  padding:12px;
-  border:none;
-  border-radius:8px;
-  background:#8B5CF6;
-  color:white;
-  font-weight:bold;
+.form-card textarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.6;
 }
 
-.preview-card{
-  background:white;
-  padding:18px;
-  border-radius:12px;
-  box-shadow:0 3px 10px rgba(0,0,0,.1);
-  height:fit-content;
+.form-card select {
+  cursor: pointer;
 }
 
-.preview-card img{
-  width:100%;
-  height:220px;
-  object-fit:cover;
-  border-radius:10px;
-  margin-bottom:12px;
+.form-card input[type="file"] {
+  padding: 10px;
+  background: var(--sell-pale);
+  cursor: pointer;
 }
 
-@media(max-width:768px){
-  .sell-layout{
-    grid-template-columns:1fr;
+/* IMAGE UPLOAD AREA */
+
+.upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 25px 18px;
+
+  background: var(--sell-pale);
+  border: 2px dashed #b8a6db;
+  border-radius: 12px;
+
+  color: var(--sell-purple);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.upload:hover {
+  background: var(--sell-light);
+  border-color: var(--sell-purple);
+}
+
+.upload:focus-within {
+  outline: 3px solid rgba(168, 149, 213, 0.25);
+  outline-offset: 3px;
+}
+
+.upload input {
+  display: none;
+}
+
+/* FORM BUTTONS */
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 5px;
+}
+
+.btn-group button {
+  flex: 1 1 140px;
+  padding: 13px 18px;
+
+  background: linear-gradient(
+    135deg,
+    var(--sell-lavender),
+    var(--sell-purple)
+  );
+
+  color: var(--sell-white);
+
+  border: 1px solid var(--sell-lavender);
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow: 0 4px 12px rgba(120, 99, 168, 0.15);
+
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.btn-group button:hover {
+  background: linear-gradient(
+    135deg,
+    var(--sell-purple),
+    #66518f
+  );
+
+  transform: translateY(-2px);
+  box-shadow: 0 7px 17px rgba(120, 99, 168, 0.22);
+}
+
+.btn-group button:active {
+  transform: translateY(0);
+}
+
+.btn-group button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* VEHICLE PREVIEW CARD */
+
+.preview-card {
+  height: fit-content;
+  min-width: 0;
+  padding: 22px;
+
+  background: var(--sell-white);
+  border: 1px solid var(--sell-border);
+  border-radius: 18px;
+
+  box-shadow: 0 8px 28px rgba(52, 40, 68, 0.06);
+}
+
+.preview-card h2,
+.preview-card h3 {
+  margin-top: 0;
+  color: var(--sell-plum);
+}
+
+.preview-card p {
+  color: var(--sell-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* PREVIEW IMAGE */
+
+.preview-card img {
+  display: block;
+
+  width: 100%;
+  height: 220px;
+  margin-bottom: 16px;
+
+  object-fit: cover;
+
+  background: var(--sell-light);
+  border: 1px solid var(--sell-border);
+  border-radius: 12px;
+}
+
+/* KEYBOARD ACCESSIBILITY */
+
+.btn-group button:focus-visible {
+  outline: 3px solid rgba(168, 149, 213, 0.45);
+  outline-offset: 4px;
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+  .sell-layout {
+    grid-template-columns: minmax(0, 1fr) 290px;
+    gap: 20px;
+  }
+
+  .form-card {
+    padding: 24px;
+  }
+
+  .preview-card {
+    padding: 18px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+  .sell-page {
+    margin: 24px auto;
+    padding: 0 16px;
+  }
+
+  .sell-layout {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .form-card {
+    padding: 24px 20px;
+    border-radius: 15px;
+  }
+
+  .preview-card {
+    padding: 20px;
+    border-radius: 15px;
+  }
+
+  .preview-card img {
+    height: 240px;
+  }
+}
+
+/* SMALL MOBILE */
+
+@media (max-width: 400px) {
+  .sell-page {
+    padding: 0 12px;
+  }
+
+  .form-card {
+    padding: 20px 15px;
+    gap: 14px;
+  }
+
+  .upload {
+    padding: 20px 12px;
+  }
+
+  .btn-group {
+    flex-direction: column;
+  }
+
+  .btn-group button {
+    width: 100%;
+  }
+
+  .preview-card img {
+    height: 190px;
+  }
+}
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  .form-card,
+  .form-card input,
+  .form-card select,
+  .form-card textarea,
+  .upload,
+  .btn-group button {
+    transition: none;
+  }
+
+  .btn-group button:hover {
+    transform: none;
   }
 }

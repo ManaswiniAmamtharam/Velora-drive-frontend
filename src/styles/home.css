@@ -1,126 +1,435 @@
-.hero{
-height:80vh;
-background:url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1600") center/cover;
-position:relative;
+
+/* =========================================
+   VELORA DRIVE - HOME PAGE
+   CLASSY LAVENDER LUXURY THEME
+========================================= */
+
+:root {
+  --home-lavender: #a895d5;
+  --home-purple: #7863a8;
+  --home-plum: #342844;
+  --home-light: #eee8f8;
+  --home-pale: #f8f5fc;
+  --home-text: #302b38;
+  --home-muted: #777180;
+  --home-white: #ffffff;
+  --home-border: #e8e1f0;
 }
 
-.overlay{
-background:rgba(8,15,40,.65);
-height:100%;
+/* HERO SECTION */
+
+.hero {
+  position: relative;
+  height: 80vh;
+  min-height: 520px;
+  max-height: 780px;
+
+  background:
+    url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1800&q=85")
+    center 55% / cover no-repeat;
+
+  overflow: hidden;
 }
 
-.hero-content{
-color:white;
-display:flex;
-flex-direction:column;
-justify-content:center;
-height:100%;
+/* LAVENDER-TINTED OVERLAY */
+
+.overlay {
+  display: flex;
+  align-items: stretch;
+
+  width: 100%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    rgba(40, 29, 57, 0.88) 0%,
+    rgba(65, 48, 88, 0.72) 48%,
+    rgba(52, 40, 68, 0.24) 100%
+  );
 }
 
-.hero h1{
-font-size:56px;
-margin-bottom:15px;
+/* HERO CONTENT */
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  width: 90%;
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+
+  color: var(--home-white);
 }
 
-.hero p{
-font-size:22px;
-margin-bottom:25px;
-max-width:550px;
+.hero h1 {
+  max-width: 750px;
+  margin-bottom: 20px;
+
+  color: var(--home-white);
+  font-size: clamp(38px, 5vw, 62px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -1.5px;
+
+  text-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
 }
 
-.hero-buttons{
-display:flex;
-gap:15px;
+.hero p {
+  max-width: 560px;
+  margin-bottom: 30px;
+
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(17px, 2vw, 21px);
+  line-height: 1.8;
 }
 
-.hero button{
-padding:14px 28px;
-border:none;
-border-radius:10px;
-background:#8B5CF6;
-color:white;
-font-size:16px;
+/* HERO BUTTONS */
+
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
-.outline{
-background:transparent!important;
-border:2px solid white!important;
+.hero button {
+  padding: 14px 29px;
+
+  background: var(--home-lavender);
+  color: var(--home-white);
+
+  border: 2px solid var(--home-lavender);
+  border-radius: 10px;
+
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-.section{
-padding:60px 0;
+.hero button:hover {
+  background: var(--home-purple);
+  border-color: var(--home-purple);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
 }
 
-.brands{
-background:#111827;
-color:white;
-padding:50px 0;
+/* OUTLINE BUTTON */
+
+.hero button.outline,
+.hero .outline {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--home-white);
+
+  border: 2px solid rgba(255, 255, 255, 0.8);
+
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
-.brand-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-gap:20px;
-margin-top:25px;
+.hero button.outline:hover,
+.hero .outline:hover {
+  background: var(--home-white);
+  color: var(--home-plum);
+  border-color: var(--home-white);
 }
 
-.brand-grid div{
-background:#1F2937;
-padding:25px;
-text-align:center;
-border-radius:10px;
-font-weight:bold;
+/* COMMON SECTION */
+
+.section {
+  padding: 70px 0;
+  background: var(--home-pale);
 }
 
-.why-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-gap:20px;
-margin-top:30px;
+.section h2 {
+  color: var(--home-plum);
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 750;
+  letter-spacing: -0.5px;
 }
 
-.why-card{
-background:white;
-padding:25px;
-border-radius:12px;
-box-shadow:0 4px 12px rgba(0,0,0,.08);
+.section p {
+  color: var(--home-muted);
+  line-height: 1.8;
 }
 
-.testimonials{
-background:#F3F4F6;
-padding:60px 0;
+/* BRANDS SECTION */
+
+.brands {
+  padding: 60px 0;
+
+  background: linear-gradient(
+    135deg,
+    #342844 0%,
+    #49385f 100%
+  );
+
+  color: var(--home-white);
 }
 
-.review-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-margin-top:30px;
+.brands h2 {
+  color: var(--home-white);
+  font-size: clamp(27px, 3vw, 35px);
 }
 
-.review{
-background:white;
-padding:22px;
-border-radius:12px;
-box-shadow:0 2px 8px rgba(0,0,0,.08);
+.brands p {
+  color: #e1d8ef;
 }
 
-@media(max-width:768px){
+.brand-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 18px;
 
-.hero{
-height:60vh;
+  margin-top: 30px;
 }
 
-.hero h1{
-font-size:36px;
+.brand-grid div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 85px;
+  padding: 22px 16px;
+
+  background: rgba(255, 255, 255, 0.07);
+  color: #f5efff;
+
+  border: 1px solid rgba(226, 214, 246, 0.2);
+  border-radius: 12px;
+
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
 }
 
-.hero p{
-font-size:18px;
+.brand-grid div:hover {
+  background: rgba(168, 149, 213, 0.2);
+  border-color: var(--home-lavender);
+  transform: translateY(-4px);
 }
 
-.hero-buttons{
-flex-direction:column;
+/* WHY CHOOSE US */
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 23px;
+
+  margin-top: 32px;
 }
 
+.why-card {
+  padding: 28px 25px;
+
+  background: var(--home-white);
+  border: 1px solid var(--home-border);
+  border-radius: 15px;
+
+  box-shadow: 0 6px 22px rgba(52, 40, 68, 0.045);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.why-card:hover {
+  transform: translateY(-5px);
+  border-color: #d5c7ed;
+  box-shadow: 0 13px 28px rgba(52, 40, 68, 0.09);
+}
+
+.why-card h3 {
+  margin-bottom: 12px;
+  color: var(--home-plum);
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.why-card p {
+  margin: 0;
+  color: var(--home-muted);
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+/* TESTIMONIALS */
+
+.testimonials {
+  padding: 70px 0;
+
+  background: linear-gradient(
+    135deg,
+    #f1ebfa 0%,
+    #faf8fd 100%
+  );
+}
+
+.testimonials h2 {
+  color: var(--home-plum);
+  font-size: clamp(27px, 3vw, 35px);
+}
+
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 22px;
+
+  margin-top: 32px;
+}
+
+.review {
+  position: relative;
+  padding: 26px;
+
+  background: var(--home-white);
+  border: 1px solid var(--home-border);
+  border-radius: 14px;
+
+  box-shadow: 0 5px 18px rgba(52, 40, 68, 0.045);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.review:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 11px 26px rgba(52, 40, 68, 0.09);
+}
+
+.review h3 {
+  margin-bottom: 10px;
+  color: var(--home-plum);
+  font-size: 17px;
+}
+
+.review p {
+  color: var(--home-muted);
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+/* RESPONSIVE DESIGN */
+
+@media (max-width: 768px) {
+  .hero {
+    height: 65vh;
+    min-height: 450px;
+    background-position: 58% center;
+  }
+
+  .overlay {
+    background: linear-gradient(
+      90deg,
+      rgba(40, 29, 57, 0.88),
+      rgba(52, 40, 68, 0.55)
+    );
+  }
+
+  .hero-content {
+    width: 90%;
+  }
+
+  .hero h1 {
+    font-size: clamp(34px, 8vw, 44px);
+    letter-spacing: -0.8px;
+  }
+
+  .hero p {
+    max-width: 480px;
+    font-size: 17px;
+    line-height: 1.7;
+  }
+
+  .hero-buttons {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero button {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .section,
+  .testimonials {
+    padding: 48px 0;
+  }
+
+  .brands {
+    padding: 45px 0;
+  }
+
+  .why-grid,
+  .review-grid {
+    gap: 16px;
+  }
+
+  .why-card,
+  .review {
+    padding: 22px;
+  }
+}
+
+/* SMALL MOBILE */
+
+@media (max-width: 400px) {
+  .hero {
+    min-height: 430px;
+    height: 65vh;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+  }
+
+  .hero p {
+    font-size: 15px;
+  }
+
+  .brand-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .brand-grid div {
+    padding: 17px 10px;
+    font-size: 13px;
+  }
+}
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero button,
+  .brand-grid div,
+  .why-card,
+  .review {
+    transition: none;
+  }
+
+  .hero button:hover,
+  .brand-grid div:hover,
+  .why-card:hover,
+  .review:hover {
+    transform: none;
+  }
 }

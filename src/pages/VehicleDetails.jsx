@@ -1,17 +1,21 @@
+
 import { useParams } from "react-router-dom";
-import { useState } from "react";
-import vehicles from "../data/vehicles";
+import { useState, useEffect } from "react";
+import { apiFetch } from "../services/api";
 import Toast from "../components/Toast";
 import "../styles/vehicleDetails.css";
 
 function VehicleDetails() {
   const { id } = useParams();
 
-  const vehicle = vehicles.find((v) => v.id === Number(id));
-
-  const [mainImage, setMainImage] = useState(vehicle?.image);
-
+  const [vehicle, setVehicle] = useState(null);
+  const [mainImage, setMainImage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [toast, setToast] = useState("");
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [favoriteLoading, setFavoriteLoading] = useState(false);
+  const [enquiryLoading, setEnquiryLoading] = useState(false);
 
   const [contact, setContact] = useState({
     name: "",
@@ -20,126 +24,231 @@ function VehicleDetails() {
     message: "",
   });
 
+  useEffect(() => {
+    let active = true;
+
+    async function loadVehicle() {
+      try {
+        setLoading(true);
+        setError("");
+
+        const data = await apiFetch(`/vehicles/${id}`);
+
+        if (active) {
+          setVehicle(data);
+          setMainImage(data.image || "/images/defaultcar.jpg");
+        }
+      } catch (err) {
+        if (active) {
+          setError(err.message || "Unable to load vehicle details.");
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadVehicle();
+
+    return () => {
+      active = false;
+    };
+  }, [id]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadFavoriteStatus() {
+      try {
+        const favorites = await apiFetch("/favorites");
+
+        if (active && Array.isArray(favorites)) {
+          setIsFavorite(
+            favorites.some(
+              (item) => Number(item.id) === Number(id)
+            )
+          );
+        }
+      } catch {
+        if (active) {
+          setIsFavorite(false);
+        }
+      }
+    }
+
+    loadFavoriteStatus();
+
+    return () => {
+      active = false;
+    };
+  }, [id]);
+
   const showToast = (message) => {
     setToast(message);
-    setTimeout(() => setToast(""), 2000);
+    setTimeout(() => setToast(""), 2500);
   };
 
-  if (!vehicle) {
-    return (
-      <div className="container">
-        <h2>Vehicle Not Found</h2>
-      </div>
-    );
-  }
+  const addFavorite = async () => {
+    if (favoriteLoading) return;
 
-  // Favorite
-  const addFavorite = () => {
-    let favorites =
-      JSON.parse(localStorage.getItem("favoriteVehicles")) || [];
+    setFavoriteLoading(true);
 
-    if (!favorites.includes(vehicle.id)) {
-      favorites.push(vehicle.id);
+    try {
+      if (isFavorite) {
+        await apiFetch(`/favorites/${id}`, {
+          method: "DELETE",
+        });
 
-      localStorage.setItem(
-        "favoriteVehicles",
-        JSON.stringify(favorites)
-      );
+        setIsFavorite(false);
+        showToast("Removed from Favorites");
+      } else {
+        await apiFetch(`/favorites/${id}`, {
+          method: "POST",
+        });
 
-      showToast("Added to Favorites ❤️");
-    } else {
-      favorites = favorites.filter((id) => id !== vehicle.id);
-
-      localStorage.setItem(
-        "favoriteVehicles",
-        JSON.stringify(favorites)
-      );
-
-      showToast("Removed from Favorites");
-    }
-  };
-
-  // Compare
-  const addCompare = () => {
-    let compare =
-      JSON.parse(localStorage.getItem("compareVehicles")) || [];
-
-    if (!compare.includes(vehicle.id)) {
-      if (compare.length >= 2) {
-        showToast("Only 2 vehicles can be compared");
-        return;
+        setIsFavorite(true);
+        showToast("Added to Favorites ❤️");
       }
-
-      compare.push(vehicle.id);
-
-      localStorage.setItem(
-        "compareVehicles",
-        JSON.stringify(compare)
-      );
-
-      showToast("Added for Comparison");
-    } else {
-      showToast("Already Selected");
+    } catch (err) {
+      showToast(err.message || "Unable to update favorites.");
+    } finally {
+      setFavoriteLoading(false);
     }
   };
 
-  // Share
-  const shareVehicle = () => {
-    navigator.clipboard.writeText(window.location.href);
-    showToast("Vehicle link copied!");
+  const addCompare = () => {
+    let compare = [];
+
+    try {
+      compare = JSON.parse(
+        localStorage.getItem("compareVehicles") || "[]"
+      );
+    } catch {
+      compare = [];
+    }
+
+    const vehicleId = Number(vehicle.id);
+
+    if (compare.some((item) => Number(item) === vehicleId)) {
+      showToast("Already Selected");
+      return;
+    }
+
+    if (compare.length >= 2) {
+      showToast("Only 2 vehicles can be compared");
+      return;
+    }
+
+    compare.push(vehicleId);
+
+    localStorage.setItem(
+      "compareVehicles",
+      JSON.stringify(compare)
+    );
+
+    showToast("Added for Comparison");
   };
 
-  // Contact Seller
-  const sendMessage = () => {
+  const shareVehicle = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      showToast("Vehicle link copied!");
+    } catch {
+      showToast("Unable to copy link. Copy the page URL manually.");
+    }
+  };
+
+  const sendMessage = async () => {
+    if (enquiryLoading) return;
+
     if (
-      !contact.name ||
-      !contact.email ||
-      !contact.phone ||
-      !contact.message
+      !contact.name.trim() ||
+      !contact.email.trim() ||
+      !contact.phone.trim() ||
+      !contact.message.trim()
     ) {
       showToast("Please fill all fields");
       return;
     }
 
-    const enquiries =
-      JSON.parse(localStorage.getItem("enquiries")) || [];
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email.trim())) {
+      showToast("Please enter a valid email address.");
+      return;
+    }
 
-    enquiries.push({
-      name: contact.name,
-      email: contact.email,
-      phone: contact.phone,
-      message: contact.message,
-      vehicle: `${vehicle.brand} ${vehicle.model}`,
-      date: new Date().toLocaleDateString(),
-    });
+    if (contact.phone.trim().length > 30) {
+      showToast("Phone number is too long.");
+      return;
+    }
 
-    localStorage.setItem(
-      "enquiries",
-      JSON.stringify(enquiries)
-    );
+    if (contact.message.trim().length > 1800) {
+      showToast("Please shorten your message.");
+      return;
+    }
 
-    showToast("Message Sent Successfully!");
+    setEnquiryLoading(true);
 
-    setContact({
-      name: "",
-      email: "",
-      phone: "",
-      message: "",
-    });
+    try {
+      await apiFetch("/enquiries", {
+        method: "POST",
+        body: JSON.stringify({
+          vehicleId: Number(vehicle.id),
+          message:
+            `Name: ${contact.name.trim()}\n` +
+            `Email: ${contact.email.trim()}\n` +
+            `Message: ${contact.message.trim()}`,
+          phone: contact.phone.trim(),
+        }),
+      });
+
+      showToast("Enquiry sent successfully!");
+
+      setContact({
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+      });
+    } catch (err) {
+      showToast(err.message || "Unable to send enquiry.");
+    } finally {
+      setEnquiryLoading(false);
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="container">
+        <h2>Loading vehicle details...</h2>
+      </div>
+    );
+  }
+
+  if (error || !vehicle) {
+    return (
+      <div className="container">
+        <h2>Vehicle Not Found</h2>
+        <p>{error || "This vehicle may have been removed."}</p>
+      </div>
+    );
+  }
+
+  const price = Number(vehicle.price ?? 0);
+  const kilometers = Number(vehicle.kilometers ?? 0);
 
   return (
     <div className="container details-page">
       <Toast message={toast} />
 
-      {/* LEFT SIDE */}
       <div className="gallery">
         <img
           src={mainImage}
-          alt={vehicle.model}
+          alt={`${vehicle.brand} ${vehicle.model}`}
           className="main-img"
           onError={(e) => {
-            e.target.src = "/images/defaultcar.jpg";
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = "/images/defaultcar.jpg";
           }}
         />
 
@@ -147,21 +256,28 @@ function VehicleDetails() {
           {[1, 2, 3].map((item) => (
             <img
               key={item}
-              src={vehicle.image}
-              alt="thumbnail"
-              onClick={() => setMainImage(vehicle.image)}
+              src={vehicle.image || "/images/defaultcar.jpg"}
+              alt={`Vehicle view ${item}`}
+              onClick={() =>
+                setMainImage(
+                  vehicle.image || "/images/defaultcar.jpg"
+                )
+              }
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = "/images/defaultcar.jpg";
+              }}
             />
           ))}
         </div>
       </div>
 
-      {/* RIGHT SIDE */}
       <div className="details">
         <h1>
           {vehicle.brand} {vehicle.model}
         </h1>
 
-        <h2>₹ {vehicle.price.toLocaleString()}</h2>
+        <h2>₹ {price.toLocaleString("en-IN")}</h2>
 
         <p>{vehicle.location}</p>
 
@@ -171,54 +287,48 @@ function VehicleDetails() {
               <td>Brand</td>
               <td>{vehicle.brand}</td>
             </tr>
-
             <tr>
               <td>Model</td>
               <td>{vehicle.model}</td>
             </tr>
-
+            <tr>
+              <td>Type</td>
+              <td>{vehicle.type}</td>
+            </tr>
             <tr>
               <td>Year</td>
-              <td>{vehicle.year}</td>
+              <td>{vehicle.year ?? "Not specified"}</td>
             </tr>
-
             <tr>
               <td>Fuel</td>
-              <td>{vehicle.fuel}</td>
+              <td>{vehicle.fuel || "Not specified"}</td>
             </tr>
-
             <tr>
               <td>Transmission</td>
-              <td>{vehicle.transmission}</td>
+              <td>{vehicle.transmission || "Not specified"}</td>
             </tr>
-
             <tr>
               <td>Kilometers</td>
-              <td>{vehicle.kilometers.toLocaleString()} km</td>
+              <td>{kilometers.toLocaleString("en-IN")} km</td>
             </tr>
-
             <tr>
               <td>Owners</td>
-              <td>{vehicle.owners}</td>
+              <td>{vehicle.owners ?? "Not specified"}</td>
             </tr>
-
             <tr>
               <td>Color</td>
-              <td>{vehicle.color}</td>
+              <td>{vehicle.color || "Not specified"}</td>
             </tr>
           </tbody>
         </table>
 
         <h3>Description</h3>
-
         <p>
-          This vehicle is in excellent condition with complete
-          service history, insurance, RC and pollution certificate.
-          Perfect for city and highway driving.
+          {vehicle.description ||
+            "Contact the seller for more information about this vehicle's condition and service history."}
         </p>
 
         <h3>Features</h3>
-
         <ul className="features">
           <li>Air Conditioning</li>
           <li>Power Windows</li>
@@ -231,17 +341,22 @@ function VehicleDetails() {
         </ul>
 
         <h3>Seller Information</h3>
-
         <div className="seller">
-          <h4>Rahul Sharma</h4>
+          <h4>Vehicle Seller</h4>
           <p>📍 {vehicle.location}</p>
-          <p>📞 +91 9876543210</p>
-          <p>✉ rahul@email.com</p>
+          <p>Contact details are available through the enquiry form.</p>
         </div>
 
         <div className="actions">
-          <button onClick={addFavorite}>
-            ❤️ Favorite
+          <button
+            onClick={addFavorite}
+            disabled={favoriteLoading}
+          >
+            {favoriteLoading
+              ? "Updating..."
+              : isFavorite
+                ? "❤️ Remove Favorite"
+                : "♡ Favorite"}
           </button>
 
           <button onClick={addCompare}>
@@ -266,6 +381,7 @@ function VehicleDetails() {
                 name: e.target.value,
               })
             }
+            disabled={enquiryLoading}
           />
 
           <input
@@ -278,10 +394,11 @@ function VehicleDetails() {
                 email: e.target.value,
               })
             }
+            disabled={enquiryLoading}
           />
 
           <input
-            type="text"
+            type="tel"
             placeholder="Phone Number"
             value={contact.phone}
             onChange={(e) =>
@@ -290,6 +407,7 @@ function VehicleDetails() {
                 phone: e.target.value,
               })
             }
+            disabled={enquiryLoading}
           />
 
           <textarea
@@ -302,10 +420,14 @@ function VehicleDetails() {
                 message: e.target.value,
               })
             }
+            disabled={enquiryLoading}
           />
 
-          <button onClick={sendMessage}>
-            Send Message
+          <button
+            onClick={sendMessage}
+            disabled={enquiryLoading}
+          >
+            {enquiryLoading ? "Sending..." : "Send Message"}
           </button>
         </div>
       </div>

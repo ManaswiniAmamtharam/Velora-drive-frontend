@@ -1,16 +1,15 @@
 import { useState, useMemo, useEffect } from "react";
-import vehicles from "../data/vehicles";
 import VehicleCard from "../components/VehicleCard";
 import SearchBar from "../components/SearchBar";
 import FilterSidebar from "../components/FilterSidebar";
 import Loading from "../components/Loading";
+import { apiFetch } from "../services/api";
 import "../components/VehicleCard.css";
 
 function Vehicles() {
-  // Search
+  const [vehicles, setVehicles] = useState([]);
   const [search, setSearch] = useState("");
 
-  // Filters
   const [type, setType] = useState("");
   const [fuel, setFuel] = useState("");
   const [transmission, setTransmission] = useState("");
@@ -19,94 +18,137 @@ function Vehicles() {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
 
-  // Sort
   const [sort, setSort] = useState("");
-
-  // Loading
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const vehiclesPerPage = 8;
 
-  // Loading Effect
+  // Fetch vehicles from Spring Boot
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 800);
+    let active = true;
 
-    return () => clearTimeout(timer);
+    async function loadVehicles() {
+      try {
+        setLoading(true);
+        setError("");
+
+        const data = await apiFetch("/vehicles");
+
+        if (active) {
+          setVehicles(Array.isArray(data) ? data : []);
+        }
+      } catch (err) {
+        if (active) {
+          setError(
+            err.message ||
+              "Unable to load vehicles. Please try again."
+          );
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadVehicles();
+
+    return () => {
+      active = false;
+    };
   }, []);
 
-  // Filter + Sort
   const filteredVehicles = useMemo(() => {
     let filtered = [...vehicles];
 
-    // Search
     filtered = filtered.filter((v) =>
-      `${v.brand} ${v.model} ${v.location}`
+      `${v.brand ?? ""} ${v.model ?? ""} ${v.location ?? ""}`
         .toLowerCase()
         .includes(search.toLowerCase())
     );
 
-    // Type
-    if (type) filtered = filtered.filter((v) => v.type === type);
+    if (type) {
+      filtered = filtered.filter(
+        (v) => v.type === type
+      );
+    }
 
-    // Fuel
-    if (fuel) filtered = filtered.filter((v) => v.fuel === fuel);
+    if (fuel) {
+      filtered = filtered.filter(
+        (v) => v.fuel === fuel
+      );
+    }
 
-    // Transmission
-    if (transmission)
+    if (transmission) {
       filtered = filtered.filter(
         (v) => v.transmission === transmission
       );
+    }
 
-    // Year
-    if (year)
-      filtered = filtered.filter((v) => String(v.year) === year);
-
-    // City
-    if (city)
-      filtered = filtered.filter((v) => v.location === city);
-
-    // Price
-    if (minPrice !== "")
+    if (year) {
       filtered = filtered.filter(
-        (v) => v.price >= Number(minPrice)
+        (v) => String(v.year) === year
       );
+    }
 
-    if (maxPrice !== "")
+    if (city) {
       filtered = filtered.filter(
-        (v) => v.price <= Number(maxPrice)
+        (v) => v.location === city
       );
+    }
 
-    // Sorting
+    if (minPrice !== "") {
+      filtered = filtered.filter(
+        (v) => Number(v.price) >= Number(minPrice)
+      );
+    }
+
+    if (maxPrice !== "") {
+      filtered = filtered.filter(
+        (v) => Number(v.price) <= Number(maxPrice)
+      );
+    }
+
     switch (sort) {
       case "low":
-        filtered.sort((a, b) => a.price - b.price);
+        filtered.sort(
+          (a, b) => Number(a.price) - Number(b.price)
+        );
         break;
 
       case "high":
-        filtered.sort((a, b) => b.price - a.price);
+        filtered.sort(
+          (a, b) => Number(b.price) - Number(a.price)
+        );
         break;
 
       case "new":
-        filtered.sort((a, b) => b.year - a.year);
+        filtered.sort(
+          (a, b) => Number(b.year) - Number(a.year)
+        );
         break;
 
       case "old":
-        filtered.sort((a, b) => a.year - b.year);
+        filtered.sort(
+          (a, b) => Number(a.year) - Number(b.year)
+        );
         break;
 
       case "kmLow":
         filtered.sort(
-          (a, b) => a.kilometers - b.kilometers
+          (a, b) =>
+            Number(a.kilometers ?? 0) -
+            Number(b.kilometers ?? 0)
         );
         break;
 
       case "kmHigh":
         filtered.sort(
-          (a, b) => b.kilometers - a.kilometers
+          (a, b) =>
+            Number(b.kilometers ?? 0) -
+            Number(a.kilometers ?? 0)
         );
         break;
 
@@ -115,6 +157,22 @@ function Vehicles() {
     }
 
     return filtered;
+  }, [
+    vehicles,
+    search,
+    type,
+    fuel,
+    transmission,
+    year,
+    city,
+    minPrice,
+    maxPrice,
+    sort,
+  ]);
+
+  // Keep pagination valid when filters change
+  useEffect(() => {
+    setCurrentPage(1);
   }, [
     search,
     type,
@@ -127,7 +185,6 @@ function Vehicles() {
     sort,
   ]);
 
-  // Pagination
   const totalPages = Math.ceil(
     filteredVehicles.length / vehiclesPerPage
   );
@@ -140,9 +197,20 @@ function Vehicles() {
     indexOfLast
   );
 
-  // IMPORTANT: Loading return comes AFTER all hooks
   if (loading) {
     return <Loading />;
+  }
+
+  if (error) {
+    return (
+      <div className="container">
+        <h1>Buy Vehicles</h1>
+        <p>{error}</p>
+        <button onClick={() => window.location.reload()}>
+          Try Again
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -175,14 +243,11 @@ function Vehicles() {
         />
 
         <div className="vehicle-section">
-          <p>
-            {filteredVehicles.length} vehicles found
-          </p>
+          <p>{filteredVehicles.length} vehicles found</p>
 
           {filteredVehicles.length === 0 ? (
             <h3>
-              No vehicles found. Try changing your
-              filters.
+              No vehicles found. Try changing your filters.
             </h3>
           ) : (
             <>
@@ -190,7 +255,13 @@ function Vehicles() {
                 {currentVehicles.map((vehicle) => (
                   <VehicleCard
                     key={vehicle.id}
-                    vehicle={vehicle}
+                    vehicle={{
+                      ...vehicle,
+                      price: Number(vehicle.price ?? 0),
+                      kilometers: Number(
+                        vehicle.kilometers ?? 0
+                      ),
+                    }}
                   />
                 ))}
               </div>
@@ -199,7 +270,7 @@ function Vehicles() {
                 <button
                   disabled={currentPage === 1}
                   onClick={() =>
-                    setCurrentPage(currentPage - 1)
+                    setCurrentPage((page) => page - 1)
                   }
                 >
                   Previous
@@ -210,11 +281,9 @@ function Vehicles() {
                 </span>
 
                 <button
-                  disabled={
-                    currentPage === totalPages
-                  }
+                  disabled={currentPage === totalPages}
                   onClick={() =>
-                    setCurrentPage(currentPage + 1)
+                    setCurrentPage((page) => page + 1)
                   }
                 >
                   Next

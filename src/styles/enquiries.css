@@ -1,124 +1,335 @@
-/* Page */
-.enquiries-page{
-  max-width:1000px;
-  margin:auto;
-  padding:30px;
-  min-height:80vh;
+
+/* ======================================
+   VELORA DRIVE - ENQUIRIES
+   CLASSY LAVENDER THEME
+====================================== */
+
+:root {
+  --enq-lavender: #a895d5;
+  --enq-purple: #7863a8;
+  --enq-plum: #342844;
+  --enq-light: #eee8f8;
+  --enq-pale: #f8f5fc;
+  --enq-text: #302b38;
+  --enq-muted: #777180;
+  --enq-border: #e8e1f0;
+  --enq-white: #ffffff;
 }
 
-/* Header */
-.enquiry-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:10px;
+/* MAIN PAGE */
+
+.enquiries-page {
+  width: 100%;
+  max-width: 1050px;
+  min-height: 80vh;
+  box-sizing: border-box;
+
+  margin: 0 auto;
+  padding: 38px 28px 55px;
+
+  color: var(--enq-text);
 }
 
-.enquiry-header h1{
-  color:#6D28D9;
+/* HEADER */
+
+.enquiry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  margin-bottom: 12px;
 }
 
-.count{
-  color:#666;
-  margin-bottom:25px;
+.enquiry-header h1 {
+  margin: 0;
+
+  color: var(--enq-plum);
+  font-size: clamp(27px, 3vw, 35px);
+  font-weight: 750;
+  letter-spacing: -0.6px;
 }
 
-/* Clear Button */
-.clear-btn{
-  background:#DC2626;
-  color:white;
-  border:none;
-  padding:10px 18px;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:600;
+/* ENQUIRY COUNT */
+
+.count {
+  margin: 0 0 26px;
+  color: var(--enq-muted);
+  font-size: 15px;
+  line-height: 1.7;
 }
 
-.clear-btn:hover{
-  background:#B91C1C;
+/* CLEAR BUTTON */
+
+.clear-btn {
+  padding: 10px 18px;
+
+  background: var(--enq-light);
+  color: var(--enq-purple);
+
+  border: 1px solid #ded2f0;
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
 }
 
-/* Empty State */
-.empty-box{
-  background:#F8F5FF;
-  border:2px dashed #C4B5FD;
-  border-radius:15px;
-  padding:50px;
-  text-align:center;
+.clear-btn:hover {
+  background: var(--enq-purple);
+  color: var(--enq-white);
+  border-color: var(--enq-purple);
+  transform: translateY(-1px);
 }
 
-.empty-box h2{
-  color:#7C3AED;
-  margin-bottom:10px;
+/* EMPTY STATE */
+
+.empty-box {
+  padding: 52px 30px;
+  text-align: center;
+
+  background: linear-gradient(
+    135deg,
+    #f8f5fc 0%,
+    #fdfbff 100%
+  );
+
+  border: 1px dashed #cfc1e8;
+  border-radius: 16px;
 }
 
-/* Enquiry Card */
-.enquiry-card{
-  background:white;
-  border-radius:15px;
-  padding:22px;
-  margin-bottom:20px;
-  box-shadow:0 6px 15px rgba(0,0,0,0.08);
+.empty-box h2 {
+  margin: 0 0 12px;
+
+  color: var(--enq-plum);
+  font-size: 23px;
+  font-weight: 700;
 }
 
-/* Top Row */
-.top-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:12px;
+.empty-box p {
+  max-width: 480px;
+  margin: 0 auto;
+
+  color: var(--enq-muted);
+  font-size: 15px;
+  line-height: 1.8;
 }
 
-.top-row h3{
-  color:#6D28D9;
+/* ENQUIRY CARD */
+
+.enquiry-card {
+  margin-bottom: 22px;
+  padding: 25px;
+
+  background: var(--enq-white);
+  border: 1px solid var(--enq-border);
+  border-radius: 15px;
+
+  box-shadow: 0 6px 22px rgba(52, 40, 68, 0.055);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
 
-.top-row span{
-  color:#777;
-  font-size:14px;
+.enquiry-card:hover {
+  transform: translateY(-3px);
+  border-color: #d8cbed;
+  box-shadow: 0 12px 28px rgba(52, 40, 68, 0.09);
 }
 
-/* Message */
-.message-box{
-  background:#F3F4F6;
-  padding:12px;
-  border-radius:8px;
-  margin-top:8px;
-  margin-bottom:15px;
-  line-height:1.5;
+/* TOP ROW */
+
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  margin-bottom: 16px;
+  padding-bottom: 15px;
+
+  border-bottom: 1px solid var(--enq-border);
 }
 
-/* Delete Button */
-.delete-btn{
-  background:#EF4444;
-  color:white;
-  border:none;
-  padding:10px 18px;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:600;
+.top-row h3 {
+  margin: 0;
+
+  color: var(--enq-plum);
+  font-size: 19px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
-.delete-btn:hover{
-  background:#DC2626;
+.top-row span {
+  color: var(--enq-muted);
+  font-size: 13px;
+  line-height: 1.6;
 }
 
-/* Responsive */
-@media(max-width:768px){
+/* MESSAGE BOX */
 
-  .enquiry-header{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:12px;
+.message-box {
+  margin: 12px 0 18px;
+  padding: 15px 17px;
+
+  background: var(--enq-pale);
+  color: var(--enq-text);
+
+  border: 1px solid #eee7f6;
+  border-left: 3px solid var(--enq-lavender);
+  border-radius: 9px;
+
+  font-size: 14px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+/* DELETE BUTTON */
+
+.delete-btn {
+  padding: 10px 18px;
+
+  background: #fff1f2;
+  color: #b84c5a;
+
+  border: 1px solid #f0d5d9;
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.delete-btn:hover {
+  background: #b84c5a;
+  color: var(--enq-white);
+  border-color: #b84c5a;
+  transform: translateY(-1px);
+}
+
+/* KEYBOARD ACCESSIBILITY */
+
+.clear-btn:focus-visible,
+.delete-btn:focus-visible {
+  outline: 3px solid rgba(168, 149, 213, 0.4);
+  outline-offset: 3px;
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+  .enquiries-page {
+    padding: 30px 22px 45px;
   }
 
-  .top-row{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:5px;
+  .enquiry-card {
+    padding: 22px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+  .enquiries-page {
+    padding: 25px 16px 35px;
   }
 
-  .empty-box{
-    padding:30px 20px;
+  .enquiry-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .enquiry-header h1 {
+    font-size: 28px;
+  }
+
+  .count {
+    margin-bottom: 22px;
+  }
+
+  .clear-btn {
+    width: 100%;
+  }
+
+  .enquiry-card {
+    padding: 19px 16px;
+    border-radius: 12px;
+  }
+
+  .top-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+  }
+
+  .top-row h3 {
+    font-size: 18px;
+  }
+
+  .message-box {
+    padding: 13px;
+  }
+
+  .delete-btn {
+    width: 100%;
+  }
+
+  .empty-box {
+    padding: 35px 20px;
+  }
+}
+
+/* SMALL MOBILE */
+
+@media (max-width: 400px) {
+  .enquiries-page {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .enquiry-card {
+    padding: 16px 13px;
+  }
+
+  .empty-box h2 {
+    font-size: 20px;
+  }
+}
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  .enquiry-card,
+  .clear-btn,
+  .delete-btn {
+    transition: none;
+  }
+
+  .enquiry-card:hover,
+  .clear-btn:hover,
+  .delete-btn:hover {
+    transform: none;
   }
 }

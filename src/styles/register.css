@@ -1,61 +1,270 @@
-.register-page{
-  min-height:80vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:#f5f3ff;
-  padding:30px;
+
+/* ======================================
+   VELORA DRIVE - REGISTER PAGE
+   CLASSY LAVENDER THEME
+====================================== */
+
+:root {
+  --register-lavender: #a895d5;
+  --register-purple: #7863a8;
+  --register-plum: #342844;
+  --register-light: #eee8f8;
+  --register-pale: #f8f5fc;
+  --register-text: #302b38;
+  --register-muted: #777180;
+  --register-border: #e8e1f0;
+  --register-white: #ffffff;
 }
 
-.register-card{
-  width:420px;
-  background:white;
-  padding:35px;
-  border-radius:18px;
-  box-shadow:0 10px 25px rgba(0,0,0,.1);
-  display:flex;
-  flex-direction:column;
-  gap:15px;
+/* REGISTER PAGE BACKGROUND */
+
+.register-page {
+  min-height: 80vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 40px 20px;
+
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(168, 149, 213, 0.16),
+      transparent 38%
+    ),
+    linear-gradient(
+      135deg,
+      #f8f5fc 0%,
+      #f0eafa 50%,
+      #faf8fd 100%
+    );
 }
 
-.register-card h1{
-  text-align:center;
-  color:#6D28D9;
+/* REGISTER CARD */
+
+.register-card {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+
+  width: 100%;
+  max-width: 420px;
+  padding: 36px;
+
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid var(--register-border);
+  border-radius: 18px;
+
+  box-shadow:
+    0 15px 40px rgba(52, 40, 68, 0.08),
+    0 3px 10px rgba(52, 40, 68, 0.03);
+
+  transition:
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
 
-.register-card p{
-  text-align:center;
-  color:#666;
+.register-card:hover {
+  border-color: #d9ccef;
+  box-shadow: 0 18px 45px rgba(52, 40, 68, 0.11);
 }
 
-.register-card input{
-  padding:12px;
-  border:1px solid #ddd;
-  border-radius:8px;
-  font-size:15px;
+/* REGISTER HEADING */
+
+.register-card h1 {
+  margin: 0 0 3px;
+
+  color: var(--register-plum);
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.6px;
+  text-align: center;
 }
 
-.register-btn{
-  padding:12px;
-  border:none;
-  border-radius:8px;
-  background:#8B5CF6;
-  color:white;
-  font-size:16px;
-  cursor:pointer;
-  font-weight:bold;
+/* REGISTER DESCRIPTION */
+
+.register-card p {
+  margin: 0 0 7px;
+
+  color: var(--register-muted);
+  font-size: 14px;
+  line-height: 1.8;
+  text-align: center;
 }
 
-.register-btn:hover{
-  background:#7C3AED;
+/* INPUT FIELDS */
+
+.register-card input {
+  width: 100%;
+  min-width: 0;
+  padding: 13px 14px;
+
+  background: #fdfcff;
+  color: var(--register-text);
+
+  border: 1px solid #ded6e9;
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
-.login-text{
-  text-align:center;
+.register-card input::placeholder {
+  color: #9a93a5;
 }
 
-.login-text a{
-  color:#6D28D9;
-  font-weight:bold;
-  text-decoration:none;
+.register-card input:hover {
+  border-color: #cfc2e5;
+}
+
+.register-card input:focus {
+  outline: none;
+  background: var(--register-white);
+  border-color: var(--register-lavender);
+  box-shadow: 0 0 0 4px rgba(168, 149, 213, 0.13);
+}
+
+/* REGISTER BUTTON */
+
+.register-btn {
+  width: 100%;
+  margin-top: 3px;
+  padding: 13px 18px;
+
+  background: linear-gradient(
+    135deg,
+    var(--register-lavender),
+    var(--register-purple)
+  );
+
+  color: var(--register-white);
+
+  border: 1px solid var(--register-lavender);
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+
+  cursor: pointer;
+
+  box-shadow: 0 5px 14px rgba(120, 99, 168, 0.17);
+
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.register-btn:hover {
+  background: linear-gradient(
+    135deg,
+    var(--register-purple),
+    #66518f
+  );
+
+  transform: translateY(-2px);
+  box-shadow: 0 8px 19px rgba(120, 99, 168, 0.25);
+}
+
+.register-btn:active {
+  transform: translateY(0);
+}
+
+.register-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* LOGIN TEXT */
+
+.login-text {
+  margin-top: 3px;
+
+  color: var(--register-muted);
+  font-size: 14px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.login-text a {
+  color: var(--register-purple);
+  font-weight: 700;
+  text-decoration: none;
+
+  transition: color 0.2s ease;
+}
+
+.login-text a:hover {
+  color: var(--register-plum);
+  text-decoration: underline;
+}
+
+/* KEYBOARD ACCESSIBILITY */
+
+.register-btn:focus-visible,
+.login-text a:focus-visible {
+  outline: 3px solid rgba(168, 149, 213, 0.45);
+  outline-offset: 4px;
+}
+
+/* TABLET AND MOBILE */
+
+@media (max-width: 768px) {
+  .register-page {
+    min-height: 75vh;
+    padding: 32px 18px;
+  }
+
+  .register-card {
+    max-width: 390px;
+    padding: 30px 25px;
+  }
+
+  .register-card h1 {
+    font-size: 28px;
+  }
+}
+
+/* SMALL MOBILE */
+
+@media (max-width: 400px) {
+  .register-page {
+    padding: 24px 13px;
+  }
+
+  .register-card {
+    padding: 26px 19px;
+    border-radius: 14px;
+    gap: 15px;
+  }
+
+  .register-card h1 {
+    font-size: 26px;
+  }
+}
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  .register-card,
+  .register-card input,
+  .register-btn,
+  .login-text a {
+    transition: none;
+  }
+
+  .register-btn:hover {
+    transform: none;
+  }
 }

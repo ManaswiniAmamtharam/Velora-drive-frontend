@@ -1,5 +1,7 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { apiFetch } from "../services/api";
 import "../styles/register.css";
 
 function Register() {
@@ -8,11 +10,11 @@ function Register() {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    mobile: "",
-    city: "",
     password: "",
     confirmPassword: "",
   });
+
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm({
@@ -21,24 +23,18 @@ function Register() {
     });
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
-    // Validation
-    if (
-      !form.name ||
-      !form.email ||
-      !form.mobile ||
-      !form.city ||
-      !form.password ||
-      !form.confirmPassword
-    ) {
-      alert("Please fill all fields.");
+    if (loading) return;
+
+    if (form.name.trim().length === 0) {
+      alert("Please enter your name.");
       return;
     }
 
-    if (!/^[0-9]{10}$/.test(form.mobile)) {
-      alert("Mobile number must contain exactly 10 digits.");
+    if (form.password.length < 8) {
+      alert("Password must contain at least 8 characters.");
       return;
     }
 
@@ -47,32 +43,31 @@ function Register() {
       return;
     }
 
-    // Get existing users
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+    try {
+      setLoading(true);
 
-    // Duplicate email check
-    const exists = users.find((u) => u.email === form.email);
+      const user = await apiFetch("/auth/register", {
+        method: "POST",
+        body: JSON.stringify({
+          name: form.name.trim(),
+          email: form.email.trim(),
+          password: form.password,
+        }),
+      });
 
-    if (exists) {
-      alert("This email is already registered.");
-      return;
+      alert(
+        `Registration successful! Welcome ${user.name || form.name.trim()}. Please log in.`
+      );
+
+      navigate("/login");
+    } catch (error) {
+      alert(
+        error.message ||
+          "Registration failed. Please try again."
+      );
+    } finally {
+      setLoading(false);
     }
-
-    const newUser = {
-      name: form.name,
-      email: form.email,
-      mobile: form.mobile,
-      city: form.city,
-      password: form.password,
-    };
-
-    users.push(newUser);
-
-    localStorage.setItem("users", JSON.stringify(users));
-
-    alert("Registration Successful!");
-
-    navigate("/login");
   };
 
   return (
@@ -100,29 +95,12 @@ function Register() {
         />
 
         <input
-          type="text"
-          name="mobile"
-          placeholder="Mobile Number"
-          value={form.mobile}
-          onChange={handleChange}
-          required
-        />
-
-        <input
-          type="text"
-          name="city"
-          placeholder="City"
-          value={form.city}
-          onChange={handleChange}
-          required
-        />
-
-        <input
           type="password"
           name="password"
-          placeholder="Password"
+          placeholder="Password (minimum 8 characters)"
           value={form.password}
           onChange={handleChange}
+          minLength={8}
           required
         />
 
@@ -132,16 +110,20 @@ function Register() {
           placeholder="Confirm Password"
           value={form.confirmPassword}
           onChange={handleChange}
+          minLength={8}
           required
         />
 
-        <button type="submit" className="register-btn">
-          Register
+        <button
+          type="submit"
+          className="register-btn"
+          disabled={loading}
+        >
+          {loading ? "Creating Account..." : "Register"}
         </button>
 
         <p className="login-text">
-          Already have an account?{" "}
-          <Link to="/login">Login</Link>
+          Already have an account? <Link to="/login">Login</Link>
         </p>
       </form>
     </div>

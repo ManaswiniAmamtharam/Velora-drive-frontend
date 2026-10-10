@@ -1,57 +1,226 @@
-.navbar{
-  background:#081633;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:18px 60px;
+
+/* ======================================
+   VELORA DRIVE - NAVBAR
+   CLASSY LAVENDER THEME
+====================================== */
+
+:root {
+  --nav-lavender: #a895d5;
+  --nav-purple: #7863a8;
+  --nav-plum: #342844;
+  --nav-pale: #f8f5fc;
+  --nav-border: #e8e1f0;
+  --nav-white: #ffffff;
 }
 
-.logo{
-  color:white;
-  font-size:2rem;
-  font-weight:bold;
-  text-decoration:none;
+/* NAVBAR */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 17px 55px;
+
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid var(--nav-border);
+  box-shadow: 0 4px 20px rgba(52, 40, 68, 0.06);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
-.nav-links{
-  display:flex;
-  align-items:center;
-  gap:24px;
+/* LOGO */
+
+.logo {
+  color: var(--nav-plum);
+  font-size: 29px;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+  text-decoration: none;
+  white-space: nowrap;
+
+  transition: color 0.25s ease;
 }
 
-.nav-links a{
-  color:white;
-  text-decoration:none;
-  font-size:17px;
+.logo:hover {
+  color: var(--nav-purple);
 }
 
-.nav-links a:hover{
-  color:#A78BFA;
+/* NAVIGATION LINKS */
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 27px;
 }
 
-.logout-btn{
-  background:#EF4444;
-  color:white;
-  border:none;
-  padding:8px 16px;
-  border-radius:8px;
-  cursor:pointer;
+.nav-links a {
+  position: relative;
+
+  color: #5e5669;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+
+  transition: color 0.25s ease;
 }
 
-.logout-btn:hover{
-  background:#DC2626;
+/* LAVENDER UNDERLINE EFFECT */
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+
+  width: 0;
+  height: 2px;
+
+  background: var(--nav-lavender);
+  border-radius: 5px;
+
+  transition: width 0.25s ease;
 }
 
-@media (max-width:768px){
-  .navbar{
-    flex-direction:column;
-    gap:15px;
-    padding:20px;
+.nav-links a:hover {
+  color: var(--nav-purple);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* KEYBOARD ACCESSIBILITY */
+
+.logo:focus-visible,
+.nav-links a:focus-visible,
+.logout-btn:focus-visible {
+  outline: 3px solid rgba(168, 149, 213, 0.55);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* LOGOUT BUTTON */
+
+.logout-btn {
+  padding: 9px 19px;
+
+  background: var(--nav-lavender);
+  color: var(--nav-white);
+
+  border: 1px solid var(--nav-lavender);
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.logout-btn:hover {
+  background: var(--nav-purple);
+  border-color: var(--nav-purple);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(120, 99, 168, 0.2);
+}
+
+.logout-btn:active {
+  transform: translateY(0);
+}
+
+/* TABLET */
+
+@media (max-width: 1000px) {
+  .navbar {
+    padding: 17px 28px;
   }
 
-  .nav-links{
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:16px;
+  .nav-links {
+    gap: 18px;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+  }
+
+  .logo {
+    font-size: 26px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+  .navbar {
+    position: relative;
+
+    flex-direction: column;
+    gap: 20px;
+
+    padding: 20px 16px;
+  }
+
+  .logo {
+    font-size: 27px;
+  }
+
+  .nav-links {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px 22px;
+    width: 100%;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+  }
+
+  .logout-btn {
+    padding: 8px 16px;
+  }
+}
+
+/* SMALL MOBILE */
+
+@media (max-width: 400px) {
+  .navbar {
+    gap: 17px;
+    padding: 18px 12px;
+  }
+
+  .nav-links {
+    gap: 14px 17px;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+  }
+
+  .logo {
+    font-size: 24px;
+  }
+}
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  .logo,
+  .nav-links a,
+  .nav-links a::after,
+  .logout-btn {
+    transition: none;
   }
 }

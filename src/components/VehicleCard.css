@@ -1,36 +1,187 @@
-.card{
-background:white;
-border-radius:12px;
-overflow:hidden;
-box-shadow:0 4px 12px rgba(0,0,0,0.1);
-transition:.3s;
+
+/* ======================================
+   VELORA DRIVE - VEHICLE CARD
+   CLASSY LAVENDER THEME
+====================================== */
+
+:root {
+  --card-lavender: #a895d5;
+  --card-purple: #7863a8;
+  --card-plum: #342844;
+  --card-pale: #f8f5fc;
+  --card-border: #e8e1f0;
+  --card-white: #ffffff;
+  --card-muted: #777180;
 }
 
-.card:hover{
-transform:translateY(-5px);
+/* VEHICLE CARD */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+
+  background: var(--card-white);
+  border: 1px solid var(--card-border);
+  border-radius: 15px;
+
+  box-shadow: 0 5px 18px rgba(52, 40, 68, 0.06);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
 
-.card img{
-width:100%;
-height:180px;
-object-fit:cover;
+.card:hover {
+  transform: translateY(-6px);
+  border-color: #d4c5ed;
+  box-shadow: 0 14px 30px rgba(75, 55, 105, 0.13);
 }
 
-.info{
-padding:15px;
+/* VEHICLE IMAGE */
+
+.card img {
+  display: block;
+  width: 100%;
+  height: 205px;
+  flex-shrink: 0;
+  object-fit: cover;
+
+  background: var(--card-pale);
+
+  transition: transform 0.4s ease;
 }
 
-.info h2{
-color:#2563eb;
-margin:8px 0;
+.card:hover img {
+  transform: scale(1.025);
 }
 
-.info button{
-width:100%;
-padding:10px;
-background:#2563eb;
-color:white;
-border:none;
-border-radius:8px;
-margin-top:10px;
+/* VEHICLE INFORMATION */
+
+.info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 19px;
+}
+
+.info h2 {
+  margin: 5px 0 10px;
+
+  color: var(--card-plum);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.4;
+
+  overflow-wrap: anywhere;
+}
+
+.info p {
+  margin: 5px 0;
+  color: var(--card-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* PRICE STYLING */
+
+.info .price {
+  margin: 7px 0 10px;
+  color: var(--card-purple);
+  font-size: 23px;
+  font-weight: 750;
+}
+
+/* VEHICLE BUTTONS */
+
+.info button {
+  width: 100%;
+  margin-top: auto;
+  padding: 12px 15px;
+
+  background: var(--card-lavender);
+  color: var(--card-white);
+
+  border: 1px solid var(--card-lavender);
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.info button:hover {
+  background: var(--card-purple);
+  border-color: var(--card-purple);
+  box-shadow: 0 5px 13px rgba(120, 99, 168, 0.2);
+}
+
+.info button:active {
+  transform: scale(0.98);
+}
+
+.info button:focus-visible {
+  outline: 3px solid rgba(168, 149, 213, 0.4);
+  outline-offset: 3px;
+}
+
+/* LINKS INSIDE CARDS */
+
+.card a {
+  color: var(--card-purple);
+  text-decoration: none;
+}
+
+.card a:hover {
+  color: var(--card-plum);
+}
+
+/* RESPONSIVE DESIGN */
+
+@media (max-width: 768px) {
+  .card {
+    border-radius: 13px;
+  }
+
+  .card img {
+    height: 190px;
+  }
+
+  .info {
+    padding: 16px;
+  }
+
+  .info h2 {
+    font-size: 18px;
+  }
+
+  .info .price {
+    font-size: 21px;
+  }
+}
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card img,
+  .info button {
+    transition: none;
+  }
+
+  .card:hover,
+  .card:hover img {
+    transform: none;
+  }
 }

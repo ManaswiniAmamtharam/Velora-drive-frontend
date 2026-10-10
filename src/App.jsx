@@ -1,4 +1,5 @@
-import { Routes, Route } from "react-router-dom";
+
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import Home from "./pages/Home";
 import Vehicles from "./pages/Vehicles";
@@ -22,74 +23,45 @@ function App() {
       <Navbar />
 
       <Routes>
-        {/* Public Pages */}
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={<Navigate to="/login" replace />}
+        />
+
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Protected Pages */}
-        <Route
-          path="/vehicles"
-          element={
-            <ProtectedRoute>
-              <Vehicles />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/home" element={
+          <ProtectedRoute><Home /></ProtectedRoute>
+        } />
 
-        <Route
-          path="/vehicles/:id"
-          element={
-            <ProtectedRoute>
-              <VehicleDetails />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/vehicles" element={
+          <ProtectedRoute><Vehicles /></ProtectedRoute>
+        } />
 
-        <Route
-          path="/sell"
-          element={
-            <ProtectedRoute>
-              <SellVehicle />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/vehicles/:id" element={
+          <ProtectedRoute><VehicleDetails /></ProtectedRoute>
+        } />
 
-        <Route
-          path="/favorites"
-          element={
-            <ProtectedRoute>
-              <Favorites />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/sell" element={
+          <ProtectedRoute><SellVehicle /></ProtectedRoute>
+        } />
 
-        <Route
-          path="/compare"
-          element={
-            <ProtectedRoute>
-              <Compare />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/favorites" element={
+          <ProtectedRoute><Favorites /></ProtectedRoute>
+        } />
 
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/compare" element={
+          <ProtectedRoute><Compare /></ProtectedRoute>
+        } />
 
-        <Route
-          path="/enquiries"
-          element={
-            <ProtectedRoute>
-              <Enquiries />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/dashboard" element={
+          <ProtectedRoute><Dashboard /></ProtectedRoute>
+        } />
+
+        <Route path="/enquiries" element={
+          <ProtectedRoute><Enquiries /></ProtectedRoute>
+        } />
 
         <Route path="*" element={<NotFound />} />
       </Routes>

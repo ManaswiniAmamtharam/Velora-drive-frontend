@@ -1,108 +1,519 @@
-.details-page{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:30px;
-margin:30px auto;
+
+/* ======================================
+   VELORA DRIVE - VEHICLE DETAILS PAGE
+   CLASSY LAVENDER THEME
+====================================== */
+
+:root {
+  --details-lavender: #a895d5;
+  --details-purple: #7863a8;
+  --details-plum: #342844;
+  --details-light: #eee8f8;
+  --details-pale: #f8f5fc;
+  --details-text: #302b38;
+  --details-muted: #777180;
+  --details-border: #e8e1f0;
+  --details-white: #ffffff;
 }
 
-.gallery{
-display:flex;
-flex-direction:column;
-gap:15px;
+/* MAIN DETAILS PAGE */
+
+.details-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 32px;
+
+  max-width: 1250px;
+  margin: 35px auto;
+  padding: 0 24px;
+
+  color: var(--details-text);
 }
 
-.main-img{
-width:100%;
-height:380px;
-object-fit:cover;
-border-radius:12px;
+/* IMAGE GALLERY */
+
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
 }
 
-.thumbs{
-display:flex;
-gap:10px;
+/* MAIN VEHICLE IMAGE */
+
+.main-img {
+  display: block;
+
+  width: 100%;
+  height: 400px;
+
+  object-fit: cover;
+
+  background: var(--details-light);
+  border: 1px solid var(--details-border);
+  border-radius: 16px;
+
+  box-shadow: 0 8px 25px rgba(52, 40, 68, 0.08);
+
+  transition: box-shadow 0.25s ease;
 }
 
-.thumbs img{
-width:90px;
-height:70px;
-object-fit:cover;
-cursor:pointer;
-border-radius:8px;
-border:2px solid #ddd;
+.main-img:hover {
+  box-shadow: 0 12px 30px rgba(52, 40, 68, 0.13);
 }
 
-.details table{
-width:100%;
-margin:20px 0;
-border-collapse:collapse;
+/* THUMBNAIL IMAGES */
+
+.thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-.details td{
-padding:10px;
-border-bottom:1px solid #ddd;
+.thumbs img {
+  width: 90px;
+  height: 70px;
+
+  object-fit: cover;
+
+  background: var(--details-light);
+  border: 2px solid var(--details-border);
+  border-radius: 9px;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.features{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:8px;
-margin:15px 0;
+.thumbs img:hover {
+  border-color: var(--details-lavender);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(120, 99, 168, 0.15);
 }
 
-.seller{
-background:#f3f4f6;
-padding:15px;
-border-radius:10px;
-margin-top:10px;
+.thumbs img:focus-visible {
+  outline: 3px solid rgba(168, 149, 213, 0.45);
+  outline-offset: 3px;
 }
 
-.actions{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-margin-top:20px;
+/* VEHICLE INFORMATION */
+
+.details {
+  min-width: 0;
+  padding: 26px;
+
+  background: var(--details-white);
+  border: 1px solid var(--details-border);
+  border-radius: 16px;
+
+  box-shadow: 0 8px 28px rgba(52, 40, 68, 0.06);
 }
 
-.actions button{
-padding:12px 18px;
-border:none;
-border-radius:8px;
-background:#2563eb;
-color:white;
-cursor:pointer;
+.details h1,
+.details h2,
+.details h3 {
+  color: var(--details-plum);
 }
 
-@media(max-width:768px){
-.details-page{
-grid-template-columns:1fr;
+.details h1 {
+  margin-top: 0;
+  font-size: 29px;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.5px;
 }
 
-.main-img{
-height:250px;
+.details p {
+  color: var(--details-muted);
+  font-size: 14px;
+  line-height: 1.8;
 }
+
+/* VEHICLE SPECIFICATIONS TABLE */
+
+.details table {
+  width: 100%;
+  margin: 22px 0;
+
+  border-collapse: collapse;
+  overflow: hidden;
+
+  background: var(--details-white);
+  border: 1px solid var(--details-border);
+  border-radius: 10px;
 }
-.contact-form{
-display:flex;
-flex-direction:column;
-gap:12px;
-margin-top:15px;
+
+.details td {
+  padding: 12px 14px;
+
+  border-bottom: 1px solid var(--details-border);
+
+  color: var(--details-text);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.details tr:last-child td {
+  border-bottom: none;
+}
+
+.details td:first-child {
+  width: 42%;
+  color: var(--details-muted);
+  font-weight: 600;
+}
+
+.details tr:hover {
+  background: var(--details-pale);
+}
+
+/* VEHICLE FEATURES */
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+
+  margin: 18px 0;
+}
+
+.features > * {
+  min-width: 0;
+  padding: 11px 13px;
+
+  background: var(--details-pale);
+  border: 1px solid var(--details-border);
+  border-radius: 9px;
+
+  color: var(--details-text);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* SELLER INFORMATION */
+
+.seller {
+  margin-top: 18px;
+  padding: 20px;
+
+  background: linear-gradient(
+    135deg,
+    #f8f5fc,
+    #eee8f8
+  );
+
+  border: 1px solid #e1d6f1;
+  border-radius: 12px;
+}
+
+.seller h2,
+.seller h3 {
+  margin-top: 0;
+  color: var(--details-plum);
+}
+
+.seller p {
+  margin: 8px 0;
+  color: var(--details-muted);
+}
+
+/* VEHICLE ACTION BUTTONS */
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  margin-top: 24px;
+}
+
+.actions button {
+  flex: 1 1 140px;
+  padding: 12px 17px;
+
+  background: linear-gradient(
+    135deg,
+    var(--details-lavender),
+    var(--details-purple)
+  );
+
+  color: var(--details-white);
+
+  border: 1px solid var(--details-lavender);
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow: 0 4px 12px rgba(120, 99, 168, 0.15);
+
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.actions button:hover {
+  background: linear-gradient(
+    135deg,
+    var(--details-purple),
+    #66518f
+  );
+
+  transform: translateY(-2px);
+  box-shadow: 0 7px 17px rgba(120, 99, 168, 0.22);
+}
+
+.actions button:active {
+  transform: translateY(0);
+}
+
+.actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* CONTACT SELLER FORM */
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  margin-top: 20px;
+  padding: 22px;
+
+  background: var(--details-pale);
+  border: 1px solid var(--details-border);
+  border-radius: 13px;
+}
+
+.contact-form h2,
+.contact-form h3 {
+  margin: 0;
+  color: var(--details-plum);
 }
 
 .contact-form input,
-.contact-form textarea{
-padding:12px;
-border:1px solid #ccc;
-border-radius:8px;
-font-size:15px;
+.contact-form textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 13px 14px;
+
+  background: var(--details-white);
+  color: var(--details-text);
+
+  border: 1px solid #ded6e9;
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.contact-form button{
-padding:12px;
-background:#8B5CF6;
-color:white;
-border:none;
-border-radius:8px;
-font-weight:bold;
-cursor:pointer;
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: #9a93a5;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--details-lavender);
+  box-shadow: 0 0 0 4px rgba(168, 149, 213, 0.13);
+}
+
+.contact-form textarea {
+  min-height: 110px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.contact-form button {
+  width: 100%;
+  padding: 13px 18px;
+
+  background: linear-gradient(
+    135deg,
+    var(--details-lavender),
+    var(--details-purple)
+  );
+
+  color: var(--details-white);
+
+  border: none;
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow: 0 4px 12px rgba(120, 99, 168, 0.15);
+
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.contact-form button:hover {
+  background: linear-gradient(
+    135deg,
+    var(--details-purple),
+    #66518f
+  );
+
+  transform: translateY(-2px);
+  box-shadow: 0 7px 17px rgba(120, 99, 168, 0.22);
+}
+
+.contact-form button:active {
+  transform: translateY(0);
+}
+
+.contact-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ACCESSIBILITY */
+
+.actions button:focus-visible,
+.contact-form button:focus-visible {
+  outline: 3px solid rgba(168, 149, 213, 0.45);
+  outline-offset: 4px;
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+  .details-page {
+    gap: 22px;
+    padding: 0 18px;
+  }
+
+  .main-img {
+    height: 320px;
+  }
+
+  .details {
+    padding: 22px;
+  }
+
+  .details h1 {
+    font-size: 25px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+  .details-page {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+
+    margin: 24px auto;
+    padding: 0 16px;
+  }
+
+  .main-img {
+    height: 280px;
+    border-radius: 13px;
+  }
+
+  .details {
+    padding: 22px;
+    border-radius: 14px;
+  }
+
+  .details h1 {
+    font-size: 26px;
+  }
+
+  .contact-form {
+    padding: 18px;
+  }
+}
+
+/* SMALL MOBILE */
+
+@media (max-width: 400px) {
+  .details-page {
+    padding: 0 12px;
+  }
+
+  .main-img {
+    height: 220px;
+  }
+
+  .thumbs {
+    gap: 8px;
+  }
+
+  .thumbs img {
+    width: 72px;
+    height: 58px;
+  }
+
+  .details {
+    padding: 17px;
+  }
+
+  .details h1 {
+    font-size: 23px;
+  }
+
+  .details td {
+    padding: 10px 8px;
+    font-size: 13px;
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+
+  .contact-form {
+    padding: 15px;
+  }
+}
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  .main-img,
+  .thumbs img,
+  .actions button,
+  .contact-form input,
+  .contact-form textarea,
+  .contact-form button {
+    transition: none;
+  }
+
+  .actions button:hover,
+  .contact-form button:hover {
+    transform: none;
+  }
 }

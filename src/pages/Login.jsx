@@ -1,5 +1,7 @@
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { apiFetch } from "../services/api";
 import "../styles/login.css";
 
 function Login() {
@@ -8,8 +10,8 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  // Load remembered email
   useEffect(() => {
     const savedEmail = localStorage.getItem("rememberEmail");
 
@@ -19,39 +21,52 @@ function Login() {
     }
   }, []);
 
-  // Login Function
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+    if (loading) return;
 
-    const user = users.find(
-      (u) => u.email === email && u.password === password
-    );
+    try {
+      setLoading(true);
 
-    if (!user) {
-      alert("Invalid Email or Password");
-      return;
+      const user = await apiFetch("/auth/login", {
+        method: "POST",
+        body: JSON.stringify({
+          email: email.trim(),
+          password: password,
+        }),
+      });
+
+      if (remember) {
+        localStorage.setItem("rememberEmail", email.trim());
+      } else {
+        localStorage.removeItem("rememberEmail");
+      }
+
+      // Store user information for display purposes.
+      // The backend session should verify authentication.
+      localStorage.setItem("currentUser", JSON.stringify(user));
+      localStorage.setItem("loggedIn", "true");
+
+      alert(`Welcome ${user.name || "back"}!`);
+
+      // Navigate after successful login.
+      navigate("/home", { replace: true });
+    } catch (error) {
+      alert(
+        error.message ||
+          "Login failed. Please check your email and password."
+      );
+    } finally {
+      setLoading(false);
     }
-
-    // Save logged-in user
-    localStorage.setItem("loggedIn", "true");
-    localStorage.setItem("currentUser", JSON.stringify(user));
-
-    if (remember) {
-      localStorage.setItem("rememberEmail", email);
-    } else {
-      localStorage.removeItem("rememberEmail");
-    }
-
-    alert(`Welcome ${user.name}!`);
-    navigate("/dashboard");
   };
 
   return (
     <div className="login-page">
       <form className="login-card" onSubmit={handleLogin}>
         <h1>Welcome Back</h1>
+
         <p>Login to your Velora Drive account</p>
 
         <input
@@ -59,6 +74,7 @@ function Login() {
           placeholder="Email Address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          autoComplete="email"
           required
         />
 
@@ -67,6 +83,7 @@ function Login() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          autoComplete="current-password"
           required
         />
 
@@ -75,7 +92,7 @@ function Login() {
             <input
               type="checkbox"
               checked={remember}
-              onChange={() => setRemember(!remember)}
+              onChange={(e) => setRemember(e.target.checked)}
             />
             Remember Me
           </label>
@@ -83,15 +100,21 @@ function Login() {
           <span
             className="forgot-link"
             onClick={() =>
-              alert("Password reset feature is a demo for this project.")
+              alert(
+                "Password reset feature is not implemented yet."
+              )
             }
           >
             Forgot Password?
           </span>
         </div>
 
-        <button type="submit" className="login-btn">
-          Login
+        <button
+          type="submit"
+          className="login-btn"
+          disabled={loading}
+        >
+          {loading ? "Logging in..." : "Login"}
         </button>
 
         <p className="register-text">
